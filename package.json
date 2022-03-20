@@ -1,0 +1,21 @@
+{
+  "name": "al-naady-backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Elyas Asmad",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "nanoid": "^3.3.1",
+    "socket.io": "^4.4.1",
+    "sqlite": "^4.0.25",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "dev": "nodemon app.js"
+  }
+}
