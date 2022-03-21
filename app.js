@@ -1,31 +1,31 @@
 const express = require('express')
-const app = express()
-const http = require('http')
-const server = http.createServer(app)
+const { createServer } = require('http')
 const { Server } = require('socket.io')
-const io = new Server(server, {
+const { ExpressPeerServer } = require('peer')
+
+const app = express()
+const httpServer = createServer(app)
+
+const peerServer = ExpressPeerServer(httpServer)
+
+const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000"
+        origin: "http://localhost:3000",
+        methods: ['GET', 'POST']
     }
 })
-const cors = require('cors')
 
-const { nanoid } = require('nanoid')
-const initDatabase = require('./utils/db')
-
-app.use(cors())
+app.use('/peer', peerServer)
 
 app.get('/', (req, res) => {
-
+    res.send('Hello World')
 })
 
 io.on('connection', (socket) => {
-    
     socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId);
-        socket.to(roomId).emit('user-connected', userId)
+        socket.join(roomId)
+        socket.broadcast.to(roomId).emit('user-connected', userId)
     })
-
 })
 
-server.listen(7000, () => console.log(`Server is listening on port 7000`))
+httpServer.listen(5000, () => console.log('Server is up and running!'))
